@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Radar, MapPin, ArrowRight, Image as ImageIcon, Leaf, Sparkles } from 'lucide-react';
 import axios from '@/lib/axiosConfig';
-import { useTranslation } from 'react-i18next';
 import { areaLabel, resolveAreaCode } from '@/lib/regionAreaCode';
 
 /**
@@ -19,16 +18,13 @@ import { areaLabel, resolveAreaCode } from '@/lib/regionAreaCode';
  *  - 회전형 conic-gradient 같은 노이지한 장식 제거. 미세한 그리드 그라디언트만 잔향으로.
  */
 export default function MovieCrowdRadarStrip({ movieName }) {
-  const { i18n } = useTranslation();
-  const isForeign = i18n.language && (i18n.language.startsWith('en') || i18n.language.startsWith('ja') || i18n.language.startsWith('zh') || i18n.language.startsWith('pt') || i18n.language.startsWith('ne'));
-
   const [mapping, setMapping] = useState(null); // { areaCode, regionName, evidence } | null
   const [predictions, setPredictions] = useState([]);
   const [loading, setLoading] = useState(false);
   const lastMovieRef = useRef('');
 
   useEffect(() => {
-    if (!movieName || isForeign) return;
+    if (!movieName) return;
     if (lastMovieRef.current === movieName) return;
     lastMovieRef.current = movieName;
     let alive = true;
@@ -75,7 +71,7 @@ export default function MovieCrowdRadarStrip({ movieName }) {
     return () => {
       alive = false;
     };
-  }, [movieName, isForeign]);
+  }, [movieName]);
 
   const summary = useMemo(() => {
     if (!predictions.length) return null;
@@ -105,7 +101,6 @@ export default function MovieCrowdRadarStrip({ movieName }) {
     };
   }, [predictions]);
 
-  if (isForeign) return null;
   if (!movieName) return null;
   if (!loading && (!mapping || !predictions.length)) return null;
 

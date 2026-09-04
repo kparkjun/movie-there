@@ -177,7 +177,7 @@ function MedicalTourismInner() {
 
   useEffect(() => { setMounted(true); }, []);
 
-  const activeLang = (i18n?.language || "ko").toLowerCase().startsWith("en") ? "en" : "ko";
+  const activeLang = "ko";
 
   useEffect(() => {
     if (nearbyMode) return undefined;
@@ -424,7 +424,7 @@ function MedicalTourismInner() {
                 className={`mt-theme-chip ${keyword === th.key ? "mt-theme-chip-active" : ""}`}
                 onClick={() => applyKeyword(th.key)}
               >
-                {lang.startsWith("en") ? th.en : th.ko}
+                {th.ko}
               </button>
             ))}
           </div>

@@ -249,9 +249,7 @@ function rangeForPreset(id) {
 function CrowdRadarInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { t, i18n } = useTranslation();
-  // 외국어(영어/일본어) 모드: 지역 라벨을 한글 대신 영문(로마자)으로 표기.
-  const isForeign = ["en", "ja", "zh"].some((l) => (i18n?.language || "ko").toLowerCase().startsWith(l));
+  const { t } = useTranslation();
   const dowList = t("crowdRadarPage.dow", { returnObjects: true, defaultValue: ["일","월","화","수","목","금","토"] });
 
   const [rawRows, setRawRows] = useState([]);
@@ -487,7 +485,7 @@ function CrowdRadarInner() {
                       ...(preset === p.id ? styles.chipActive : null),
                     }}
                   >
-                    {isForeign ? p.en : p.ko}
+                    {p.ko}
                   </button>
                 ))}
               </div>

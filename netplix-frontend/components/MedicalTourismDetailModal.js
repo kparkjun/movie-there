@@ -119,7 +119,7 @@ export default function MedicalTourismDetailModal({ spot, userPos, onClose }) {
   const [detail, setDetail] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
 
-  const activeLang = (i18n?.language || "ko").toLowerCase().startsWith("en") ? "en" : "ko";
+  const activeLang = "ko";
 
   const { isSaved, toggle, hydrated: favHydrated } = useMedicalFavorites();
   const saved = favHydrated && spot ? isSaved(spot.id) : false;
@@ -194,10 +194,7 @@ export default function MedicalTourismDetailModal({ spot, userPos, onClose }) {
     return null;
   }, [spot]);
 
-  const langBadge = useMemo(() => {
-    const raw = (spot?.language || i18n?.language || "ko").toLowerCase();
-    return raw.startsWith("en") ? "EN" : "KO";
-  }, [spot?.language, i18n?.language]);
+  const langBadge = "KO";
 
   useEffect(() => {
     const onKey = (e) => {

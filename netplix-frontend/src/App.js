@@ -26,7 +26,7 @@ import Mypage from "./pages/Mypage";
 import DvdStores from "./pages/DvdStores";
 import axios from "./axiosConfig";
 import "./App.css";
-import { Radar, Globe } from "lucide-react";
+import { Radar } from "lucide-react";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
 import { Browser } from "@capacitor/browser";
@@ -108,22 +108,6 @@ function DashboardStatus({ isDashboard }) {
   return null;
 }
 
-function LanguageToggle() {
-  const { i18n } = useTranslation();
-  const nextLang = i18n.language?.startsWith("ko") ? "en" : "ko";
-  const label = nextLang === "en" ? "EN" : "KO";
-  return (
-    <button
-      className="app-chip app-chip-secondary"
-      onClick={() => i18n.changeLanguage(nextLang)}
-      style={{ display: "inline-flex", alignItems: "center", gap: "4px", minWidth: "auto", padding: "4px 10px", fontSize: "12px" }}
-    >
-      <Globe size={14} />
-      {label}
-    </button>
-  );
-}
-
 function AuthActions({ isLoggedIn, isAuthPage, pathname, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useTranslation();
@@ -189,9 +173,6 @@ function AuthActions({ isLoggedIn, isAuthPage, pathname, onLogout }) {
 
   return (
     <div className="app-nav-actions">
-      <div className="app-lang-desktop">
-        <LanguageToggle />
-      </div>
       <button
         className="app-hamburger"
         onClick={() => setMenuOpen(!menuOpen)}
@@ -215,9 +196,6 @@ function AuthActions({ isLoggedIn, isAuthPage, pathname, onLogout }) {
             </button>
             <ul className="app-nav-list app-nav-mobile">
               {navItems}
-              <li key="lang">
-                <LanguageToggle />
-              </li>
             </ul>
           </div>
         </>

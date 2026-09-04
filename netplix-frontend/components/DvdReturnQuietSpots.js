@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Radar, MapPin, ArrowRight, PackageCheck } from 'lucide-react';
 import axios from '@/lib/axiosConfig';
-import { useTranslation } from 'react-i18next';
 import { resolveAreaCode, areaLabel } from '@/lib/regionAreaCode';
 
 /**
@@ -21,13 +20,9 @@ import { resolveAreaCode, areaLabel } from '@/lib/regionAreaCode';
  *
  * 숨김 조건:
  *   - areaCode 매칭 실패
- *   - 영어 모드
  *   - 결과 없음
  */
 export default function DvdReturnQuietSpots({ keyword = '', lat, lng }) {
-  const { i18n } = useTranslation();
-  const isForeign = i18n.language && (i18n.language.startsWith('en') || i18n.language.startsWith('ja') || i18n.language.startsWith('zh') || i18n.language.startsWith('pt') || i18n.language.startsWith('ne'));
-
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +30,7 @@ export default function DvdReturnQuietSpots({ keyword = '', lat, lng }) {
   const areaCode = useMemo(() => resolveAreaCode(keyword), [keyword]);
 
   useEffect(() => {
-    if (!areaCode || isForeign) return;
+    if (!areaCode) return;
     let alive = true;
     (async () => {
       setLoading(true);
@@ -53,7 +48,7 @@ export default function DvdReturnQuietSpots({ keyword = '', lat, lng }) {
     return () => {
       alive = false;
     };
-  }, [areaCode, isForeign]);
+  }, [areaCode]);
 
   const topQuiet = useMemo(() => {
     if (!areaCode) return [];
@@ -88,7 +83,6 @@ export default function DvdReturnQuietSpots({ keyword = '', lat, lng }) {
     return enriched.sort((a, b) => a.avg - b.avg).slice(0, 6);
   }, [rows, areaCode]);
 
-  if (isForeign) return null;
   if (!areaCode) return null;
   if (!loading && topQuiet.length === 0) return null;
 

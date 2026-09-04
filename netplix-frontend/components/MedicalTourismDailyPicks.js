@@ -111,7 +111,7 @@ export default function MedicalTourismDailyPicks({ spots, onOpen }) {
         {picks.map((s, i) => {
           const theme = CATEGORY_THEMES[inferTheme(s.name)] || CATEGORY_THEMES.general;
           const ThemeIcon = theme.Icon;
-          const themeLabel = lang.startsWith("en") ? theme.en : theme.ko;
+          const themeLabel = theme.ko;
           return (
           <button
             key={s.id}

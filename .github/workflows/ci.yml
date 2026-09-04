@@ -75,7 +75,7 @@ jobs:
 
       - name: Validate i18n locales (JSON parse)
         run: |
-          node -e "JSON.parse(require('fs').readFileSync('src/locales/ko.json','utf8'));JSON.parse(require('fs').readFileSync('src/locales/en.json','utf8'));console.log('locales OK')"
+          node -e "JSON.parse(require('fs').readFileSync('locales/ko.json','utf8'));JSON.parse(require('fs').readFileSync('src/locales/ko.json','utf8'));console.log('locales OK')"
 
       - name: Next.js build
         env:

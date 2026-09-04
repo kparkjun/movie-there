@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { CalendarRange, Radar, TrendingDown, TrendingUp } from 'lucide-react';
 import axios from '@/lib/axiosConfig';
-import { useTranslation } from 'react-i18next';
 
 /**
  * Cine-Trip 지역 상세용 · 향후 30일 관광지 집중률 히트맵 달력.
@@ -13,13 +12,11 @@ import { useTranslation } from 'react-i18next';
  * 데이터:  GET /api/v1/cine-trip/concentration?areaCode={X}
  */
 export default function ConcentrationHeatmap30({ areaCode = null, regionLabel = '' }) {
-  const { i18n } = useTranslation();
-  const isForeign = i18n.language && (i18n.language.startsWith('en') || i18n.language.startsWith('ja') || i18n.language.startsWith('zh') || i18n.language.startsWith('pt') || i18n.language.startsWith('ne'));
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!areaCode || isForeign) {
+    if (!areaCode) {
       setRows([]);
       return;
     }
@@ -42,7 +39,7 @@ export default function ConcentrationHeatmap30({ areaCode = null, regionLabel = 
     return () => {
       alive = false;
     };
-  }, [areaCode, isForeign]);
+  }, [areaCode]);
 
   const { bestDay, worstDay, avg, byDate } = useMemo(() => {
     const map = new Map();
@@ -69,7 +66,6 @@ export default function ConcentrationHeatmap30({ areaCode = null, regionLabel = 
     };
   }, [rows]);
 
-  if (isForeign) return null;
   if (!areaCode) return null;
   if (!loading && rows.length === 0) return null;
 

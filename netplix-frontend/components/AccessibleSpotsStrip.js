@@ -19,7 +19,6 @@ import {
 import axios from '@/lib/axiosConfig';
 import { MapServiceLinkButton } from '@/components/MapServiceLinkButton';
 import { ktoThumbUrl } from '@/lib/fastImage';
-import { useTranslation } from 'react-i18next';
 import useBackButtonClose from '@/lib/useBackButtonClose';
 
 /**
@@ -50,9 +49,6 @@ const BUCKET_ORDER = [
 ];
 
 export default function AccessibleSpotsStrip({ areaCode, regionLabel = '' }) {
-  const { i18n } = useTranslation();
-  const isForeign = i18n.language && (i18n.language.startsWith('en') || i18n.language.startsWith('ja') || i18n.language.startsWith('zh') || i18n.language.startsWith('pt') || i18n.language.startsWith('ne'));
-
   const [buckets, setBuckets] = useState({});
   const [activeBucket, setActiveBucket] = useState('attractions');
   const [loading, setLoading] = useState(true);
@@ -99,8 +95,6 @@ export default function AccessibleSpotsStrip({ areaCode, regionLabel = '' }) {
   if (!loading && totalCount === 0) {
     return null;
   }
-  // 무장애 관광(KorWithService2) 국내 전용 데이터셋 → 영어 모드에서는 섹션 전체 숨김.
-  if (isForeign) return null;
 
   const activeList = buckets?.[activeBucket] || [];
 

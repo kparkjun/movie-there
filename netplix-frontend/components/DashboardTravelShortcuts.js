@@ -255,8 +255,13 @@ export default function DashboardTravelShortcuts() {
         }
         .dts-shortcuts {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+          grid-template-columns: 1fr;
           gap: 8px;
+        }
+        @media (min-width: 768px) {
+          .dts-shortcuts {
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+          }
         }
         .dts-shortcut-link {
           position: relative;

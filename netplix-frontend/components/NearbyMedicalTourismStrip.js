@@ -7,7 +7,7 @@
  * <p>컨셉: "K-의료관광 · 외국인 환영"
  *  - 영화/드라마로 한국 문화를 접한 해외 시청자에게 한국 방문 시 이용 가능한
  *    성형·한방·건강검진·재활·미용 등 의료관광 클러스터를 노출
- *  - i18n 언어에 따라 lang=ko / lang=en 자동 전환
+ *  - 한국어 UI 고정, 의료관광 API 는 lang=ko
  *
  * <p>호출 우선순위:
  *  1) lat/lng → /api/v1/medical-tourism/nearby
@@ -22,7 +22,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import axios from "@/src/axiosConfig";
-import { Stethoscope, MapPin, Phone, ArrowRight, Globe2 } from "lucide-react";
+import { Stethoscope, MapPin, Phone, ArrowRight } from "lucide-react";
 import FastImg from "@/components/FastImg";
 import MedicalTourismDetailModal from "@/components/MedicalTourismDetailModal";
 
@@ -36,13 +36,13 @@ export default function NearbyMedicalTourismStrip({
   subtitle,
   accent = "#0ea5e9",
 }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errored, setErrored] = useState(false);
   const [selectedSpot, setSelectedSpot] = useState(null);
 
-  const lang = (i18n?.language || "ko").toLowerCase().startsWith("en") ? "en" : "ko";
+  const lang = "ko";
   const useCoords = typeof lat === "number" && typeof lng === "number"
     && !Number.isNaN(lat) && !Number.isNaN(lng);
   const useKeyword = !useCoords && !!(keyword && keyword.trim());
@@ -102,9 +102,6 @@ export default function NearbyMedicalTourismStrip({
               </span>
             )}
           </h3>
-          <span className="nmt-lang-badge" style={{ borderColor: accent, color: accent }}>
-            <Globe2 size={10} /> {lang.toUpperCase()}
-          </span>
         </div>
         <Link href={allHref} className="nmt-all" style={{ color: accent }}>
           {t("nearbyMedicalTourism.viewAll")} <ArrowRight size={14} />

@@ -3,8 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { setUserLanguage } from '@/lib/i18n';
-import { Globe, Crown, LogOut } from 'lucide-react';
+import { Crown, LogOut } from 'lucide-react';
 import DashboardWeatherNavGlyph from '@/components/DashboardWeatherNavGlyph';
 
 export default function NavBar() {
@@ -47,10 +46,6 @@ export default function NavBar() {
 
   const showNavLogout = isLoggedIn && !isAuthPage;
 
-  // 메인(랜딩) 페이지에서는 로그인 전에도 사용자가 빠르게 언어를 전환할 수 있도록
-  // 한국어/영어 토글을 네비게이션 맨 왼쪽에 단독 노출한다.
-  // (LanguageToggle 은 setUserLanguage → i18n.changeLanguage 를 호출 →
-  //  useTranslation 을 쓰는 모든 페이지/컴포넌트가 즉시 재렌더링된다.)
   const isLandingPage = pathname === '/';
   /** 메인·로그인·회원가입·관리자·구석구석 — 순백 네비(다크 바디 위에서 동일 이슈 방지) */
   const useSolidWhiteNav =
@@ -75,10 +70,9 @@ export default function NavBar() {
   return (
     <nav className={navClass}>
       <div className={`app-nav-inner${isDashboardRoute ? ' app-nav-inner--dashboard' : ''}`}>
-        {(isLandingPage || showNavLogout) && (
+        {showNavLogout && (
           <div className="app-nav-leftmost">
-            {showNavLogout && <NavLogoutButton onLogout={handleLogout} />}
-            {isLandingPage && <LanguageToggle />}
+            <NavLogoutButton onLogout={handleLogout} />
           </div>
         )}
         {isDashboardRoute && (
@@ -145,41 +139,6 @@ function NavLogoutButton({ onLogout }) {
     >
       <LogOut size={18} strokeWidth={2.5} />
     </button>
-  );
-}
-
-function LanguageToggle() {
-  const { i18n } = useTranslation();
-  const current = (i18n.language || 'ko').slice(0, 2);
-  const langs = [
-    { code: 'ko', label: 'KO' },
-    { code: 'en', label: 'EN' },
-    { code: 'ja', label: '日本語' },
-    { code: 'zh', label: '中文' },
-    { code: 'ne', label: 'नेपाली' },
-    { code: 'pt', label: 'PT' },
-  ];
-  return (
-    <div
-      className="app-lang-switch"
-      role="group"
-      aria-label="Language"
-      style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-    >
-      <Globe size={14} aria-hidden="true" />
-      {langs.map(({ code, label }) => (
-        <button
-          key={code}
-          type="button"
-          className={`app-chip ${current === code ? 'app-chip-primary' : 'app-chip-secondary'}`}
-          aria-pressed={current === code}
-          onClick={() => setUserLanguage(code)}
-          style={{ minWidth: 'auto', padding: '4px 8px', fontSize: '12px', lineHeight: 1 }}
-        >
-          {label}
-        </button>
-      ))}
-    </div>
   );
 }
 
@@ -343,7 +302,6 @@ function AuthActions({ isLoggedIn, isAdmin, isAuthPage, pathname, isDashboardRou
           <div ref={menuRef} className="app-nav-mobile-panel">
             <ul className="app-nav-list app-nav-mobile">
               {navItems}
-              <li key="lang"><LanguageToggle /></li>
             </ul>
           </div>
         </>

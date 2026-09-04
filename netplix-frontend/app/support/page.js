@@ -28,7 +28,7 @@ function Support() {
   const containerRef = useRef(null);
 
   const supportEmail = "kparkjun@gmail.com";
-  const appName = "Touraz Holic";
+  const appName = "movie there";
 
   const faqItems = [
     { id: "1", question: t("support.faq1q"), answer: t("support.faq1a") },

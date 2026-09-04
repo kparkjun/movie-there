@@ -17,10 +17,6 @@ public interface PersistenceMoviePort {
 
     String insert(NetplixMovie netplixMovie);
 
-    void updateNepaliCopy(String movieName, String overviewNe, String taglineNe);
-
-    void updatePortugueseCopy(String movieName, String overviewPt, String taglinePt);
-
     void deleteByContentType(String contentType);
 
     List<NetplixMovie> fetchByGenresExcludingMovieNames(String contentType, List<String> genres, List<String> excludeMovieNames, int limit);

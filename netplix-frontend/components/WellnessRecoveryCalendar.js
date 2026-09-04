@@ -18,11 +18,10 @@ import RegionWeatherGlyph from '@/components/RegionWeatherGlyph';
  *   - 가장 한산한 상위 5개 "날짜 + 지역" 을 카드로 정렬해 보여준다.
  *   - "이 날 근처 힐링 스팟은?" 버튼으로 /wellness?nearby=true 또는 /crowd-radar 로 연결.
  *
- * 웰니스 페이지 전용. 결과 0건이면 숨김. 영어 모드 숨김.
+ * 웰니스 페이지 전용. 결과 0건이면 숨김.
  */
 export default function WellnessRecoveryCalendar() {
-  const { t, i18n } = useTranslation();
-  const isEn = i18n.language && i18n.language.startsWith('en');
+  const { t } = useTranslation();
 
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -345,7 +344,7 @@ function QuietDayCard({ r, rank, delay }) {
             letterSpacing: '-0.3px',
           }}
         >
-          {formatDateShort(r.baseDate, i18n.language)}
+          {formatDateShort(r.baseDate)}
         </div>
         <div
           style={{
@@ -412,15 +411,12 @@ function toDate(baseDate) {
   return d;
 }
 
-function formatDateShort(baseDate, lang) {
+function formatDateShort(baseDate) {
   const d = toDate(baseDate);
   if (!d) return '-';
   const mm = String(d.getMonth() + 1).padStart(2, '0');
   const dd = String(d.getDate()).padStart(2, '0');
-  const isEn = typeof lang === 'string' && lang.startsWith('en');
-  const dows = isEn
-    ? ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-    : ['일', '월', '화', '수', '목', '금', '토'];
+  const dows = ['일', '월', '화', '수', '목', '금', '토'];
   const dow = dows[d.getDay()];
   return `${mm}.${dd} (${dow})`;
 }

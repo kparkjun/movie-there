@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { Footprints, Mountain, Timer, Download, ArrowRight, Compass } from 'lucide-react';
 import Link from 'next/link';
 import axios from '@/lib/axiosConfig';
-import { useTranslation } from 'react-i18next';
 import GoogleEarthProPlatformLinks from '@/components/GoogleEarthProPlatformLinks';
 
 /**
@@ -30,9 +29,6 @@ export default function NearbyTrekkingStrip({
   subtitle,
   showEarthProLinks = true,
 }) {
-  const { i18n } = useTranslation();
-  const isForeign = i18n.language && (i18n.language.startsWith('en') || i18n.language.startsWith('ja') || i18n.language.startsWith('zh') || i18n.language.startsWith('pt') || i18n.language.startsWith('ne'));
-
   const isLight = theme === 'light';
   const headerBadgeBg = isLight
     ? 'linear-gradient(135deg, #047857 0%, #0d9488 50%, #0e7490 100%)'
@@ -77,8 +73,6 @@ export default function NearbyTrekkingStrip({
   }, [areaCode, limit]);
 
   if (!loading && !error && courses.length === 0) return null;
-  // 두루누비(한국관광공사 코리아둘레길) 국내 전용 트래킹 코스 → 영어 모드에서는 섹션 숨김.
-  if (isForeign) return null;
 
   const lightRailStyle = isLight
     ? {

@@ -17,7 +17,6 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import axios from '@/lib/axiosConfig';
-import { useTranslation } from 'react-i18next';
 import { MapServiceLinkButton } from '@/components/MapServiceLinkButton';
 import { ktoThumbUrl } from '@/lib/fastImage';
 import useBackButtonClose from '@/lib/useBackButtonClose';
@@ -95,8 +94,6 @@ const THEME_PALETTE = {
 };
 
 export default function PetFriendlySpotsStrip({ areaCode, regionLabel = '', theme = 'dark' }) {
-  const { i18n } = useTranslation();
-  const isForeign = i18n.language && (i18n.language.startsWith('en') || i18n.language.startsWith('ja') || i18n.language.startsWith('zh') || i18n.language.startsWith('pt') || i18n.language.startsWith('ne'));
   const palette = THEME_PALETTE[theme === 'light' ? 'light' : 'dark'];
 
   const [buckets, setBuckets] = useState({});
@@ -142,8 +139,6 @@ export default function PetFriendlySpotsStrip({ areaCode, regionLabel = '', them
     0
   );
   if (!loading && totalCount === 0) return null;
-  // 반려동물 친화 관광(KorPetTourService) 국내 전용 → 영어 모드에서는 섹션 숨김.
-  if (isForeign) return null;
 
   const activeList = buckets?.[activeBucket] || [];
 

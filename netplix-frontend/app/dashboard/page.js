@@ -1989,7 +1989,7 @@ function DashboardContent() {
               <p style={{ color: "#d1d5db", fontSize: "18px", fontWeight: 500, margin: 0 }}>{t("dashboard.footerAuthor")}</p>
             </div>
             <div style={{ marginTop: "32px", paddingTop: "24px" }}>
-              <p style={{ color: "#6b7280", fontSize: "12px", margin: 0 }}>© 2025 Touraz Holic. All rights reserved.</p>
+              <p style={{ color: "#6b7280", fontSize: "12px", margin: 0 }}>© 2025 movie there. All rights reserved.</p>
             </div>
           </div>
         </footer>

@@ -278,7 +278,7 @@ function LoginContent() {
                     WebkitTextFillColor: 'transparent',
                   }}
                 >
-                  Touraz Holic
+                  movie there
                 </span>
               </div>
               <p style={{ color: '#a1a1aa', fontSize: '14px' }}>

@@ -453,7 +453,7 @@ function WellnessInner() {
                 className={`wel-theme-chip ${keyword === th.key ? "wel-theme-chip-active" : ""}`}
                 onClick={() => applyKeyword(th.key)}
               >
-                {lang.startsWith("en") ? th.en : th.ko}
+                {th.ko}
               </button>
             ))}
           </div>

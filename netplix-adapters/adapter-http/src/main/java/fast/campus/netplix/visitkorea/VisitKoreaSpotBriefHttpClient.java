@@ -25,8 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 관광지 단건 "간단 상세" 어댑터. KTO {@code searchKeyword2} 를 가용한 3개 서비스에서 순차 호출해
  * 가장 먼저 매칭되는 결과를 채운다.
  *
- * <p>호출 순서: KorWithService2 (무장애) → KorPetTourService2 (반려동물) → EngService2 (영문)
- * → JpnService2 (일문) → ChsService2 (중문 간체) → ChtService2 (중문 번체). 일반 KorService2 는
+ * <p>호출 순서: KorWithService2 (무장애) → KorPetTourService2 (반려동물). 일반 KorService2 는
  * 우리 키에서 {@code Forbidden} 으로 막혀 별도 활용신청이 필요하므로 제외했다.
  *
  * <p>TarRlteTarService1 응답에는 좌표/이미지가 없어 본 어댑터가 보완 역할을 한다. 결과는
@@ -77,18 +76,6 @@ public class VisitKoreaSpotBriefHttpClient implements TouristSpotBriefPort {
     @Value("${visitkorea.pet.search-keyword:}")
     private String petSearchUrl;
 
-    @Value("${visitkorea.eng.search-keyword:}")
-    private String engSearchUrl;
-
-    @Value("${visitkorea.jpn.search-keyword:}")
-    private String jpnSearchUrl;
-
-    @Value("${visitkorea.chs.search-keyword:}")
-    private String chsSearchUrl;
-
-    @Value("${visitkorea.cht.search-keyword:}")
-    private String chtSearchUrl;
-
     @Value("${visitkorea.access.cache-minutes:360}")
     private long cacheMinutes;
 
@@ -97,8 +84,7 @@ public class VisitKoreaSpotBriefHttpClient implements TouristSpotBriefPort {
     @Override
     public boolean isConfigured() {
         if (serviceKey == null || serviceKey.isBlank()) return false;
-        return notBlank(withSearchUrl) || notBlank(petSearchUrl) || notBlank(engSearchUrl)
-                || notBlank(jpnSearchUrl) || notBlank(chsSearchUrl) || notBlank(chtSearchUrl);
+        return notBlank(withSearchUrl) || notBlank(petSearchUrl);
     }
 
     @Override
@@ -118,11 +104,7 @@ public class VisitKoreaSpotBriefHttpClient implements TouristSpotBriefPort {
         }
 
         Optional<TouristSpotBrief> result = tryService(withSearchUrl, "with", norm, ktoArea)
-                .or(() -> tryService(petSearchUrl, "pet", norm, ktoArea))
-                .or(() -> tryService(engSearchUrl, "eng", norm, ktoArea))
-                .or(() -> tryService(jpnSearchUrl, "jpn", norm, ktoArea))
-                .or(() -> tryService(chsSearchUrl, "chs", norm, ktoArea))
-                .or(() -> tryService(chtSearchUrl, "cht", norm, ktoArea));
+                .or(() -> tryService(petSearchUrl, "pet", norm, ktoArea));
 
         cache.put(cacheKey, new CacheEntry(result.orElse(null), Instant.now().toEpochMilli()));
         return result;

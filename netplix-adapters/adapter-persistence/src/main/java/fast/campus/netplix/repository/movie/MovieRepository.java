@@ -169,26 +169,6 @@ public class MovieRepository implements PersistenceMoviePort {
 
     @Override
     @Transactional
-    public void updateNepaliCopy(String movieName, String overviewNe, String taglineNe) {
-        if (movieName == null || movieName.isBlank()) return;
-        movieJpaRepository.findByMovieName(movieName).ifPresent(existing -> {
-            existing.applyNepaliCopy(overviewNe, taglineNe);
-            movieJpaRepository.save(existing);
-        });
-    }
-
-    @Override
-    @Transactional
-    public void updatePortugueseCopy(String movieName, String overviewPt, String taglinePt) {
-        if (movieName == null || movieName.isBlank()) return;
-        movieJpaRepository.findByMovieName(movieName).ifPresent(existing -> {
-            existing.applyPortugueseCopy(overviewPt, taglinePt);
-            movieJpaRepository.save(existing);
-        });
-    }
-
-    @Override
-    @Transactional
     public void deleteByContentType(String contentType) {
         log.info("Deleting all movies with contentType: {}", contentType);
         movieJpaRepository.deleteByContentType(contentType);

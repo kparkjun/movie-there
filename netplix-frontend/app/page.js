@@ -265,7 +265,7 @@ function Main() {
                     letterSpacing: "-1px",
                   }}
                 >
-                  Touraz Holic
+                  movie there
                 </span>
               </motion.div>
 
@@ -460,7 +460,7 @@ function Main() {
               marginTop: "24px",
             }}
           >
-            © 2025 Touraz Holic. All rights reserved.
+            © 2025 movie there. All rights reserved.
           </motion.p>
         </motion.div>
       </div>
