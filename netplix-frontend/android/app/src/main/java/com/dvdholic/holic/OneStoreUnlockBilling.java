@@ -31,7 +31,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * 원스토어 일회성 잠금 해제 {@code dvdholic_unlock}.
+ * 원스토어 일회성 잠금 해제 {@code moviethere_unlock}.
  */
 final class OneStoreUnlockBilling implements PurchasesUpdatedListener {
 

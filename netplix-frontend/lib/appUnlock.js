@@ -1,7 +1,7 @@
 import { Capacitor, registerPlugin } from "@capacitor/core";
 
 /** 스토어 일회성 제품 ID — Play/원스토어 콘솔 값과 반드시 같아야 함 */
-export const UNLOCK_PRODUCT_ID = "dvdholic_unlock";
+export const UNLOCK_PRODUCT_ID = "moviethere_unlock";
 
 const AppUnlock = registerPlugin("AppUnlock", {
   web: {

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import axios from "@/lib/axiosConfig";
 import { getApiBaseUrl } from "@/lib/apiConfig";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { hardNavigate } from "@/lib/hardNavigate";
+import { hardNavigate, markHomeVisited, isEmbeddedPreview } from "@/lib/hardNavigate";
 let Capacitor, Browser;
 let capacitorReadyPromise = null;
 function ensureCapacitorLoaded() {
@@ -135,8 +135,6 @@ function LoginContent() {
       } catch (_) {}
     };
   }, []);
-
-  const handleBrowse = () => hardNavigate("/dashboard");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -451,19 +449,29 @@ function LoginContent() {
 
             {/* Browse Without Login */}
             <div className="mt-4">
-              <button
-                type="button"
-                onClick={handleBrowse}
+              <a
+                href="/dashboard"
+                target="_top"
+                onClick={(e) => {
+                  markHomeVisited();
+                  if (isEmbeddedPreview()) return;
+                  e.preventDefault();
+                  hardNavigate("/dashboard");
+                }}
                 className="w-full h-12 rounded-xl font-semibold transition-all duration-300"
                 style={{
                   background: 'rgba(255, 255, 255, 0.06)',
                   color: 'rgba(255, 255, 255, 0.85)',
                   border: '1px solid rgba(255, 255, 255, 0.15)',
                   cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textDecoration: 'none',
                 }}
               >
                 {t("login.browseWithoutLogin")}
-              </button>
+              </a>
             </div>
 
             {/* Sign Up Link */}
@@ -471,7 +479,10 @@ function LoginContent() {
               {t("login.noAccount")}{' '}
               <button
                 type="button"
-                onClick={() => hardNavigate("/signup")}
+                onClick={() => {
+                  markHomeVisited();
+                  hardNavigate("/signup");
+                }}
                 style={{
                   color: '#3b82f6',
                   fontWeight: 600,

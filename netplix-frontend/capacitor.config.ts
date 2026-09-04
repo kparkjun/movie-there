@@ -1,14 +1,14 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.dvdholic.holic',
-  appName: 'Touraz Holic',
+  appId: 'com.moviethere.app',
+  appName: 'movie there',
   webDir: 'build',
   server: {
-    url: 'https://touraz-dvdholic-2194adc70fa6.herokuapp.com',
+    url: 'https://movie-there-290fdbcabcb3.herokuapp.com',
     cleartext: false,
     // 외부 사이트(구석구석 등)가 WKWebView 를 점유하면 뒤로가기가 앱으로 돌아오지 않는다.
-    allowNavigation: ['touraz-dvdholic-2194adc70fa6.herokuapp.com'],
+    allowNavigation: ['movie-there-290fdbcabcb3.herokuapp.com'],
   },
   plugins: {
     CapacitorHttp: {
@@ -22,7 +22,7 @@ const config: CapacitorConfig = {
     }
   },
   ios: {
-    scheme: 'dvdholic'
+    scheme: 'moviethere'
   },
   android: {
     buildOptions: {

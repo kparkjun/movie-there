@@ -12,9 +12,28 @@ export function markHomeVisited() {
   document.cookie = `visited_home=1; Path=/; Max-Age=${maxAge}; SameSite=${sameSite}`;
 }
 
+/** Cursor Simple Browser 등 미리보기 iframe. 여기선 location.assign 이 막히는 경우가 있다. */
+export function isEmbeddedPreview() {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.self !== window.top;
+  } catch {
+    return true;
+  }
+}
+
 export function hardNavigate(path) {
   markHomeVisited();
   if (typeof window === "undefined") return;
   const dest = path && String(path).startsWith("/") ? path : `/${path || ""}`;
+  const abs = new URL(dest, window.location.href).href;
+  try {
+    if (window.top && window.top !== window.self) {
+      window.top.location.assign(abs);
+      return;
+    }
+  } catch {
+    /* cross-origin iframe */
+  }
   window.location.assign(dest);
 }

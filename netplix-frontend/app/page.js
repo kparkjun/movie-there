@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Film, Info, Star, Sparkles } from "lucide-react";
-import { hardNavigate, markHomeVisited } from "@/lib/hardNavigate";
+import { hardNavigate, markHomeVisited, isEmbeddedPreview } from "@/lib/hardNavigate";
 
 /**
  * middleware 가 최초 방문자를 `/?next=/원래경로` 로 보낼 때 사용.
@@ -303,8 +303,11 @@ function Main() {
                 <div style={{ width: "100%" }}>
                   <a
                     href="/dashboard"
+                    target="_top"
                     className="btn-hover landing-cta"
                     onClick={(e) => {
+                      markHomeVisited();
+                      if (isEmbeddedPreview() && !isNative) return;
                       e.preventDefault();
                       hardNavigate("/dashboard");
                     }}
@@ -323,8 +326,11 @@ function Main() {
 
                 <a
                   href="/login"
+                  target="_top"
                   className="btn-hover landing-cta"
                   onClick={(e) => {
+                    markHomeVisited();
+                    if (isEmbeddedPreview() && !isNative) return;
                     e.preventDefault();
                     hardNavigate("/login");
                   }}
@@ -339,8 +345,11 @@ function Main() {
 
                 <a
                   href="/signup"
+                  target="_top"
                   className="btn-hover landing-cta"
                   onClick={(e) => {
+                    markHomeVisited();
+                    if (isEmbeddedPreview() && !isNative) return;
                     e.preventDefault();
                     hardNavigate("/signup");
                   }}

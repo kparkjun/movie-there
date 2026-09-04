@@ -30,13 +30,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * 일회성 상품 {@code dvdholic_unlock}.
+ * 일회성 상품 {@code moviethere_unlock}.
  * Play 스토어 설치본은 Google Play Billing, 원스토어·사이드로드는 원스토어 IAP.
  */
 @CapacitorPlugin(name = "AppUnlock")
 public class AppUnlockPlugin extends Plugin implements PurchasesUpdatedListener {
 
-    public static final String PRODUCT_ID = "dvdholic_unlock";
+    public static final String PRODUCT_ID = "moviethere_unlock";
 
     private BillingClient billingClient;
     @Nullable

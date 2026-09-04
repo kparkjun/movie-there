@@ -17,7 +17,7 @@ const html = `<!DOCTYPE html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Touraz Holic</title>
+  <title>movie there</title>
 </head>
 <body>
   <!-- Capacitor placeholder; 앱은 capacitor.config.ts 의 server.url 로 로드됩니다. -->
