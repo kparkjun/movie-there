@@ -19,6 +19,11 @@ const config: CapacitorConfig = {
     },
     App: {
       launchShowDuration: 0
+    },
+    Geolocation: {
+      permissions: {
+        location: '가까운 촬영지·매장·관광 정보를 보여 주기 위해 위치가 필요합니다.'
+      }
     }
   },
   ios: {

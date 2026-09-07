@@ -360,6 +360,10 @@ async function isGeolocationPermissionDenied() {
 }
 
 export async function getGeoForWeather() {
+  const { ensureLocationAccessConsent } = await import("@/lib/locationAccessNotice");
+  if (!(await ensureLocationAccessConsent())) {
+    return null;
+  }
   if (await isGeolocationPermissionDenied()) {
     return null;
   }

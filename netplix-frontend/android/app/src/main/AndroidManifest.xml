@@ -7,9 +7,12 @@
     <!-- Play Console '광고 ID 사용' 선언과 일치 (AdMob). merge로 의존성 manifest의 remove 방지 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- '가까운 DVD 매장' 등 위치 기반 기능: WebView/Geolocation 플러그인이 실제 GPS 사용 -->
+    <!-- 위치는 선택 권한. 인앱 사전 고지·동의 후에만 런타임 요청한다. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-feature android:name="android.hardware.location" android:required="false" />
+    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+    <uses-feature android:name="android.hardware.location.network" android:required="false" />
     <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
         tools:node="merge" />

@@ -36,6 +36,7 @@ function Support() {
     { id: "3", question: t("support.faq3q"), answer: t("support.faq3a") },
     { id: "4", question: t("support.faq4q"), answer: t("support.faq4a") },
     { id: "5", question: t("support.faq5q"), answer: t("support.faq5a") },
+    { id: "6", question: t("support.faq6q"), answer: t("support.faq6a") },
   ];
 
   const toggleFAQ = (id) => {

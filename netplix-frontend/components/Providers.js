@@ -7,6 +7,7 @@ import { OAUTH_BROWSER_CANCELLED, resetNativeOAuthSession } from '@/lib/oauthNat
 import useDragScrollAll from '@/lib/useDragScroll';
 import { isSameAppOrigin, openExternalUrl } from '@/lib/openExternalUrl';
 import AppPaywall from '@/components/AppPaywall';
+import LocationAccessNotice from '@/components/LocationAccessNotice';
 
 export default function Providers({ children }) {
   useEffect(() => {
@@ -280,6 +281,7 @@ export default function Providers({ children }) {
   return (
     <>
       <AppPaywall />
+      <LocationAccessNotice />
       {children}
     </>
   );

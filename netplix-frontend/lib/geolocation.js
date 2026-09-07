@@ -1,5 +1,6 @@
 import { Capacitor } from "@capacitor/core";
 import { setSharedGeo, getSharedGeo } from "@/lib/sharedGeo";
+import { ensureLocationAccessConsent } from "@/lib/locationAccessNotice";
 
 /**
  * 기기의 실제 위치(GPS/네트워크)를 가져온다.
@@ -52,6 +53,13 @@ function toResult(pos) {
 }
 
 export async function getDeviceLocation({ timeout = 15000, maximumAge = 120000 } = {}) {
+  const consented = await ensureLocationAccessConsent({ promptIfDeclined: true });
+  if (!consented) {
+    const err = new Error("location-permission-denied");
+    err.code = "PERMISSION_DENIED";
+    throw err;
+  }
+
   if (Capacitor?.isNativePlatform?.()) {
     // 1) 빠른 네트워크(저정확도) 위치 — 실내에서도 수 초 내 확보.
     try {
