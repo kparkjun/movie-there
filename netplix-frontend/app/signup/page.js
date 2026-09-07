@@ -24,6 +24,10 @@ function Signup() {
   const { t } = useTranslation();
 
   const [countryCode, setCountryCode] = useState("+82");
+  const [agreePrivacyUse, setAgreePrivacyUse] = useState(false);
+  const [agreePrivacyPolicy, setAgreePrivacyPolicy] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [agreePhone, setAgreePhone] = useState(false);
 
   const formatPhoneDigits = (value) => {
     return value.replace(/\D/g, "").slice(0, 11);
@@ -89,6 +93,11 @@ function Signup() {
       return;
     }
 
+    if (!agreePrivacyUse || !agreePrivacyPolicy || !agreeTerms) {
+      alert(t("signup.needRequiredConsent"));
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -96,7 +105,7 @@ function Signup() {
         username: trimmedUsername,
         password: password1,
         email: trimmedEmail,
-        phone: getFullPhone(),
+        phone: agreePhone ? getFullPhone() : null,
       });
 
       if (response.data.success) {
@@ -117,6 +126,52 @@ function Signup() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const requiredConsentOk = agreePrivacyUse && agreePrivacyPolicy && agreeTerms;
+
+  const setAllRequired = (checked) => {
+    setAgreePrivacyUse(checked);
+    setAgreePrivacyPolicy(checked);
+    setAgreeTerms(checked);
+  };
+
+  const openPolicy = async (path) => {
+    if (typeof window === "undefined") return;
+    const url = path.startsWith("http") ? path : `${window.location.origin}${path}`;
+    try {
+      const { Capacitor } = await import("@capacitor/core");
+      if (Capacitor?.isNativePlatform?.()) {
+        const { Browser } = await import("@capacitor/browser");
+        await Browser.open({ url });
+        return;
+      }
+    } catch {
+      /* web fallback */
+    }
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const checkboxLabelStyle = {
+    display: "flex",
+    alignItems: "flex-start",
+    gap: "10px",
+    color: "rgba(255,255,255,0.88)",
+    fontSize: "13px",
+    lineHeight: 1.45,
+    cursor: "pointer",
+  };
+
+  const linkBtnStyle = {
+    color: "#a78bfa",
+    background: "none",
+    border: "none",
+    padding: 0,
+    marginLeft: "6px",
+    cursor: "pointer",
+    fontSize: "12px",
+    textDecoration: "underline",
+    flexShrink: 0,
   };
 
   const getInputStyle = (fieldName) => ({
@@ -426,6 +481,93 @@ function Signup() {
                 </div>
               </motion.div>
 
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.52 }}
+                className="space-y-3"
+                style={{
+                  marginTop: "8px",
+                  padding: "14px",
+                  borderRadius: "16px",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                }}
+              >
+                <div style={{ color: "#e4e4e7", fontSize: "14px", fontWeight: 700 }}>
+                  {t("signup.consentTitle")}
+                </div>
+                <ul style={{ color: "#a1a1aa", fontSize: "12px", lineHeight: 1.55, paddingLeft: "18px", margin: 0 }}>
+                  <li>{t("signup.consentItems")}</li>
+                  <li>{t("signup.consentPurpose")}</li>
+                  <li>{t("signup.consentRetention")}</li>
+                  <li>{t("signup.consentRefuse")}</li>
+                </ul>
+
+                <label style={{ ...checkboxLabelStyle, fontWeight: 600 }}>
+                  <input
+                    type="checkbox"
+                    checked={requiredConsentOk}
+                    onChange={(e) => setAllRequired(e.target.checked)}
+                    style={{ marginTop: "2px", width: "16px", height: "16px", accentColor: "#8b5cf6" }}
+                  />
+                  <span>{t("signup.agreeAll")}</span>
+                </label>
+
+                <label style={checkboxLabelStyle}>
+                  <input
+                    type="checkbox"
+                    checked={agreePrivacyUse}
+                    onChange={(e) => setAgreePrivacyUse(e.target.checked)}
+                    required
+                    style={{ marginTop: "2px", width: "16px", height: "16px", accentColor: "#8b5cf6" }}
+                  />
+                  <span>{t("signup.agreePrivacyUse")}</span>
+                </label>
+
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "8px" }}>
+                  <label style={{ ...checkboxLabelStyle, flex: 1 }}>
+                    <input
+                      type="checkbox"
+                      checked={agreePrivacyPolicy}
+                      onChange={(e) => setAgreePrivacyPolicy(e.target.checked)}
+                      required
+                      style={{ marginTop: "2px", width: "16px", height: "16px", accentColor: "#8b5cf6" }}
+                    />
+                    <span>{t("signup.agreePrivacyPolicy")}</span>
+                  </label>
+                  <button type="button" onClick={() => openPolicy("/privacy-policy.html")} style={linkBtnStyle}>
+                    {t("signup.viewPrivacy")}
+                  </button>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "8px" }}>
+                  <label style={{ ...checkboxLabelStyle, flex: 1 }}>
+                    <input
+                      type="checkbox"
+                      checked={agreeTerms}
+                      onChange={(e) => setAgreeTerms(e.target.checked)}
+                      required
+                      style={{ marginTop: "2px", width: "16px", height: "16px", accentColor: "#8b5cf6" }}
+                    />
+                    <span>{t("signup.agreeTerms")}</span>
+                  </label>
+                  <button type="button" onClick={() => openPolicy("/terms-of-service.html")} style={linkBtnStyle}>
+                    {t("signup.viewTerms")}
+                  </button>
+                </div>
+
+                <label style={checkboxLabelStyle}>
+                  <input
+                    type="checkbox"
+                    checked={agreePhone}
+                    onChange={(e) => setAgreePhone(e.target.checked)}
+                    style={{ marginTop: "2px", width: "16px", height: "16px", accentColor: "#8b5cf6" }}
+                  />
+                  <span>{t("signup.agreePhone")}</span>
+                </label>
+              </motion.div>
+
               {/* Submit Button */}
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -435,14 +577,14 @@ function Signup() {
               >
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !requiredConsentOk}
                   className="w-full h-12 rounded-xl font-semibold transition-all duration-300"
                   style={{
                     background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
                     color: '#fff',
                     border: 'none',
-                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                    opacity: isSubmitting ? 0.6 : 1,
+                    cursor: (isSubmitting || !requiredConsentOk) ? 'not-allowed' : 'pointer',
+                    opacity: (isSubmitting || !requiredConsentOk) ? 0.6 : 1,
                     boxShadow: '0 4px 20px rgba(139, 92, 246, 0.3)',
                   }}
                 >

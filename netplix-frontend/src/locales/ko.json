@@ -72,7 +72,21 @@
     "invalidPhone": "전화번호는 10자리 숫자를 입력해주세요. (예: 1012345678)",
     "signupComplete": "회원가입이 완료되었습니다. 로그인해주세요.",
     "signupFailed": "회원가입 실패: ",
-    "serverError": "서버 오류"
+    "serverError": "서버 오류",
+    "consentTitle": "개인정보 수집·이용 안내",
+    "consentItems": "수집 항목: 이메일, 비밀번호, 사용자 이름(필수), 전화번호(선택)",
+    "consentPurpose": "이용 목적: 회원가입·로그인, 계정 식별, 고객 문의 처리",
+    "consentRetention": "보유 기간: 회원 탈퇴 시까지(관계 법령에 따른 보존 기간 제외)",
+    "consentRefuse": "동의 거부 권리: 필수 동의를 거부하면 회원가입이 제한됩니다. 선택 항목은 거부해도 가입할 수 있습니다.",
+    "agreeAll": "전체 동의",
+    "agreePrivacyUse": "개인정보 수집·이용에 동의합니다 (필수)",
+    "agreePrivacyPolicy": "개인정보 처리방침에 동의합니다 (필수)",
+    "agreeTerms": "이용약관에 동의합니다 (필수)",
+    "agreePhone": "전화번호 수집·이용에 동의합니다 (선택)",
+    "viewPrivacy": "개인정보 처리방침 보기",
+    "viewTerms": "이용약관 보기",
+    "needRequiredConsent": "필수 약관에 동의해 주세요.",
+    "needPhoneConsent": "전화번호를 저장하려면 선택 동의에 체크해 주세요. 동의하지 않으면 전화번호 없이 가입됩니다."
   },
   "account": {
     "back": "뒤로 가기",
