@@ -258,7 +258,7 @@ function AuthActions({ isLoggedIn, isAdmin, isAuthPage, pathname, isDashboardRou
     );
   }
 
-  // 사장님 링크는 adminToken이 존재할 때만 노출 (admin/3819 로그인 후)
+  // 사장님 링크는 adminToken이 존재할 때만 노출 (admin / spring3819 로그인 후)
   if (isAdmin) {
     navItems.unshift(
       <li key="owner"><Link href="/admin" className="app-chip app-chip-owner" onClick={closeMenu}>{t('nav.owner')}</Link></li>
