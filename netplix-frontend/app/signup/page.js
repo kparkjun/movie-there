@@ -106,6 +106,8 @@ function Signup() {
         password: password1,
         email: trimmedEmail,
         phone: agreePhone ? getFullPhone() : null,
+        privacyConsent: agreePrivacyUse && agreePrivacyPolicy,
+        termsConsent: agreeTerms,
       });
 
       if (response.data.success) {

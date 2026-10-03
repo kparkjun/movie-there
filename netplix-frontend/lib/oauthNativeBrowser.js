@@ -97,9 +97,10 @@ export async function openNativeOAuthBrowser(oauthUrl) {
   document.cookie = 'X-App-Platform=native;path=/;max-age=300;SameSite=None;Secure';
 
   try {
+    // iPad 에서 popover 는 앵커 없이 빈 화면만 뜬다. 전체 화면으로 연다.
     Browser.open({
       url: oauthUrl,
-      presentationStyle: 'popover',
+      presentationStyle: 'fullscreen',
       toolbarColor: '#000000',
     }).catch(() => {
       release();

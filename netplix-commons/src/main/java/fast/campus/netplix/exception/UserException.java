@@ -34,4 +34,10 @@ public class UserException extends NetplixException {
             super(ErrorCode.INVALID_PHONE_FORMAT);
         }
     }
+
+    public static class PrivacyConsentRequiredException extends UserException {
+        public PrivacyConsentRequiredException() {
+            super(ErrorCode.PRIVACY_CONSENT_REQUIRED);
+        }
+    }
 }

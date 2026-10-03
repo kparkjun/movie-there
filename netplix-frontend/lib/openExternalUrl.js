@@ -31,7 +31,7 @@ export async function openExternalUrl(rawUrl) {
     const { Capacitor } = await import("@capacitor/core");
     if (Capacitor.isNativePlatform?.()) {
       const { Browser } = await import("@capacitor/browser");
-      await Browser.open({ url, presentationStyle: "popover" });
+      await Browser.open({ url, presentationStyle: "fullscreen" });
       return true;
     }
   } catch {

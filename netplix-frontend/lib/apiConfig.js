@@ -1,21 +1,15 @@
 /**
- * API Base URL
- * - Capacitor 네이티브(특히 Android): WebView origin 이 https://localhost 등이라
- *   상대 경로 /api 가 기기 로컬로 가며 연결 실패하는 경우가 있음 → Heroku 절대 URL 고정.
- * - iOS도 동일 이슈(App Store 리젝 2.1a: OAuth/데모 로그인 등) 대응.
+ * movie there 전용 API.
+ * 화면(capacitor server.url)과 로그인·회원가입·OAuth 가 같은 Heroku 앱을 쓴다.
+ * 예전 touraz-dvdholic 호스트로는 보내지 않는다.
  *
- * 단, capacitor.config 의 server.url 로 외부 도메인(Heroku) 자체를 띄우는
- * 모드(iOS 빌드 현 구성)에서는 page origin === HEROKU_API_URL 이라 same-origin 이다.
- * 이때 절대 URL 을 강제하면 CapacitorHttp(iOS native HTTP 가로채기)가
- * "외부 출처 요청"으로 인식해 별도 경로로 처리되며, 큰 JSON 응답에서 처리 지연·
- * 부분 수신·헤더 누락 등 모바일에서만 재현되는 실패가 보고됐다. 따라서 page
- * origin 이 동일한 Heroku 호스트인 경우 상대 경로를 사용해 same-origin XHR 로
- * 보내, 웹 빌드와 동일한 경로를 타도록 한다.
+ * 웹뷰가 이미 이 호스트이면 상대 경로를 쓴다. 절대 URL 로 바꾸면
+ * CapacitorHttp 가 외부 요청으로 가로채 모바일에서만 응답이 깨진다.
  */
 import { Capacitor } from "@capacitor/core";
 
-const HEROKU_API_URL = "https://touraz-dvdholic-2194adc70fa6.herokuapp.com";
-const HEROKU_API_HOST = "touraz-dvdholic-2194adc70fa6.herokuapp.com";
+const HEROKU_API_URL = "https://movie-there-290fdbcabcb3.herokuapp.com";
+const HEROKU_API_HOST = "movie-there-290fdbcabcb3.herokuapp.com";
 
 function isNativeCapacitor() {
   try {
@@ -66,4 +60,14 @@ export function getApiBaseUrl() {
   }
 
   return process.env.NODE_ENV === "production" ? "" : "http://localhost:8080";
+}
+
+/** OAuth 는 로그인 API 와 같은 호스트에서 시작해야 세션·계정이 맞는다. */
+export function getOAuthOrigin() {
+  const base = getApiBaseUrl();
+  if (base && base.startsWith("http")) return base.replace(/\/$/, "");
+  if (typeof window !== "undefined" && window.location?.origin?.startsWith("http")) {
+    return window.location.origin;
+  }
+  return HEROKU_API_URL;
 }

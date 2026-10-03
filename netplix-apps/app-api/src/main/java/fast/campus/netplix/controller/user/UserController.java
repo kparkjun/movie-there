@@ -6,6 +6,7 @@ import fast.campus.netplix.movie.NetplixMovie;
 import fast.campus.netplix.user.DeleteUserUseCase;
 import fast.campus.netplix.user.FetchUserUseCase;
 import fast.campus.netplix.user.RegisterUserUseCase;
+import fast.campus.netplix.exception.UserException;
 import fast.campus.netplix.user.command.UserRegistrationCommand;
 import fast.campus.netplix.user.response.SimpleUserResponse;
 import fast.campus.netplix.controller.NetplixApiResponse;
@@ -43,6 +44,9 @@ public class UserController {
     public NetplixApiResponse<UserRegistrationResponse> register(
             @RequestBody UserRegistrationRequest request
     ) {
+        if (!request.isPrivacyConsent() || !request.isTermsConsent()) {
+            throw new UserException.PrivacyConsentRequiredException();
+        }
         UserRegistrationCommand command = UserRegistrationCommand.builder()
                 .username(request.getUsername())
                 .encryptedPassword(request.getPassword())

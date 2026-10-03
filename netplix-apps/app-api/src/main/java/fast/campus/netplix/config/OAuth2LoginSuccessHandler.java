@@ -41,7 +41,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         TokenResponse tokens = oauthLoginTokenIssuer.issueTokenAfterOAuth(providerId, provider, name, oauthEmail);
 
-        boolean isIOSApp = isNativeAppByCookie(request);
+        boolean isIOSApp = NativeAppOAuthSupport.isNative(request);
 
         if (isIOSApp) {
             String redirectUrl = UriComponentsBuilder.fromUriString("dvdholic://callback")
@@ -63,17 +63,6 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             response.setStatus(HttpServletResponse.SC_FOUND);
             response.setHeader("Location", redirectUrl);
         }
-    }
-
-    private boolean isNativeAppByCookie(HttpServletRequest request) {
-        if (request.getCookies() == null) return false;
-        for (jakarta.servlet.http.Cookie c : request.getCookies()) {
-            if ("X-App-Platform".equals(c.getName()) && "native".equals(c.getValue())) {
-                log.info("Native app detected via cookie");
-                return true;
-            }
-        }
-        return false;
     }
 
     private String resolveName(OAuth2User oauth2User, String provider) {

@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.moviethere.app',
+  appId: 'com.junhopark.moviethere',
   appName: 'movie there',
   webDir: 'build',
   server: {
@@ -15,7 +15,7 @@ const config: CapacitorConfig = {
       enabled: true,
     },
     Browser: {
-      presentationStyle: 'popover'
+      presentationStyle: 'fullscreen'
     },
     App: {
       launchShowDuration: 0

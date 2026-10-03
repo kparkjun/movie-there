@@ -51,7 +51,7 @@ spring:
             client-secret: ${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_APPLE_CLIENT_SECRET:}
             client-name: Apple
             authorization-grant-type: authorization_code
-            redirect-uri: "${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_APPLE_REDIRECT_URI:https://touraz-dvdholic-2194adc70fa6.herokuapp.com/login/oauth2/code/apple}"
+            redirect-uri: "${SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_APPLE_REDIRECT_URI:https://movie-there-290fdbcabcb3.herokuapp.com/login/oauth2/code/apple}"
             scope:
               - openid
               - name

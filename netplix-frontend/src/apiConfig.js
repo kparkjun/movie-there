@@ -1,11 +1,11 @@
 /**
- * API Base URL
- * - Capacitor 네이티브(특히 Android): WebView origin 이 https://localhost 등일 때
- *   상대 경로 /api 가 기기 로컬로 가며 실패 → Heroku 절대 URL 고정.
+ * movie there 전용 API. touraz-dvdholic 으로는 보내지 않는다.
+ * 웹뷰가 이미 이 호스트이면 상대 경로를 쓴다.
  */
 import { Capacitor } from "@capacitor/core";
 
-const HEROKU_API_URL = "https://touraz-dvdholic-2194adc70fa6.herokuapp.com";
+const HEROKU_API_URL = "https://movie-there-290fdbcabcb3.herokuapp.com";
+const HEROKU_API_HOST = "movie-there-290fdbcabcb3.herokuapp.com";
 
 function isNativeCapacitor() {
   try {
@@ -22,6 +22,11 @@ export function getApiBaseUrl() {
   }
   const env = process.env.REACT_APP_API_URL;
   if (env && env !== "") return env;
+
+  if (typeof window !== "undefined") {
+    const host = (window.location?.host || "").toLowerCase();
+    if (isNativeCapacitor() && host === HEROKU_API_HOST) return "";
+  }
 
   if (isNativeCapacitor()) return HEROKU_API_URL;
 

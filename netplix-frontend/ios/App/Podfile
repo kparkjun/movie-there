@@ -3,10 +3,16 @@ require_relative '../../node_modules/@capacitor/ios/scripts/pods_helpers'
 platform :ios, '15.0'
 use_frameworks!
 
-# workaround to avoid Xcode caching of Pods that requires
-# Product -> Clean Build Folder after new Cordova plugins installed
-# Requires CocoaPods 1.6 or newer
-install! 'cocoapods', :disable_input_output_paths => true
+# 모든 Pod(서드파티 의존성)의 컴파일 경고를 억제한다.
+# Capacitor 코어/플러그인 등 node_modules 안의 코드에서 나는 deprecation 경고
+# (예: tmpVCAppeared, kGADAdSizeSmartBannerPortrait)는 직접 고칠 수 없고
+# npm install 시 덮어써지므로, 프로젝트 빌드 로그를 깨끗하게 유지하기 위해 억제한다.
+inhibit_all_warnings!
+
+# NOTE: input/output paths are kept enabled so CocoaPods emits xcfilelists for
+# its script phases. This avoids Xcode's warning that "[CP] Embed Pods Frameworks"
+# runs on every build. If you add/remove Cordova plugins and see stale Pods,
+# run Product -> Clean Build Folder in Xcode.
 
 def capacitor_pods
   pod 'Capacitor', :path => '../../node_modules/@capacitor/ios'
@@ -20,9 +26,27 @@ end
 target 'App' do
   capacitor_pods
   pod 'Google-Mobile-Ads-SDK'
-  pod 'CapacitorCommunityAdmob', :path => '../../node_modules/@capacitor-community/admob'
 end
 
 post_install do |installer|
   assertDeploymentTarget(installer)
+
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      # 최신 Xcode 의 모듈 검증기(VerifyModule)는 CapacitorCordova 등 프레임워크
+      # 헤더의 double-quote include 를 에러로 처리한다
+      # (예: 'CDVViewController.h' expected angle-bracketed instead).
+      # CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER 로는 억제되지 않으므로
+      # 서드파티 Pod 프레임워크에 대한 모듈 검증을 끈다(산출물에는 영향 없음).
+      config.build_settings['ENABLE_MODULE_VERIFIER'] = 'NO'
+    end
+  end
+
+  # Pods.xcodeproj 는 pod install 때마다 재생성되며 오래된 업그레이드 체크 값으로
+  # "Update to recommended settings" 경고가 뜬다. 앱 프로젝트와 동일한 최신
+  # Xcode 버전으로 맞춰 경고를 없앤다.
+  pods_project = installer.pods_project
+  pods_project.root_object.attributes['LastUpgradeCheck'] = '2660'
+  pods_project.root_object.attributes['LastSwiftUpdateCheck'] = '2660'
+  pods_project.save
 end

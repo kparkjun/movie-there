@@ -9,6 +9,7 @@ const BYPASS_PREFIXES = [
   '/api',
   '/oauth2',
   '/login/oauth2',
+  '/native-oauth',
   '/_next',
   '/static',
   '/public',

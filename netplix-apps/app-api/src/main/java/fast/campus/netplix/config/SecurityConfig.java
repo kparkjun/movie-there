@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -84,16 +85,7 @@ public class SecurityConfig {
                 .successHandler(oauth2LoginSuccessHandler)
                 .failureHandler((request, response, exception) -> {
                     log.error("OAuth2 로그인 실패: {}", exception.getMessage(), exception);
-                    boolean isNative = false;
-                    if (request.getCookies() != null) {
-                        for (jakarta.servlet.http.Cookie c : request.getCookies()) {
-                            if ("X-App-Platform".equals(c.getName()) && "native".equals(c.getValue())) {
-                                isNative = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (isNative) {
+                    if (NativeAppOAuthSupport.isNative(request)) {
                         response.sendRedirect("dvdholic://oauth-cancelled");
                     } else {
                         response.sendRedirect("/login?error=true");
@@ -113,6 +105,7 @@ public class SecurityConfig {
 
         httpSecurity.userDetailsService(netplixUserDetailsService);
 
+        httpSecurity.addFilterBefore(new NativeAppOAuthSupport(), OAuth2AuthorizationRequestRedirectFilter.class);
         httpSecurity.addFilterBefore(adminAuthFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.addFilterBefore(publicMovieListRequestFilter, UsernamePasswordAuthenticationFilter.class);

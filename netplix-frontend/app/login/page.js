@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "@/lib/axiosConfig";
-import { getApiBaseUrl } from "@/lib/apiConfig";
+import { getOAuthOrigin } from "@/lib/apiConfig";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { hardNavigate, markHomeVisited, isEmbeddedPreview } from "@/lib/hardNavigate";
 let Capacitor, Browser;
@@ -184,23 +184,17 @@ function LoginContent() {
     }
   };
 
-  const getApiBase = getApiBaseUrl;
-
   const startOAuth = async (provider) => {
-    // OAuth URL 은 반드시 절대(https://...) 여야 한다.
-    // getApiBase() 는 same-origin 최적화로 빈 문자열("")을 돌려줄 수 있는데,
-    // 그러면 oauthUrl 이 상대경로("/oauth2/...")가 되어 Android Custom Tabs(Browser.open)가
-    // "Unable to display URL" 로 실패한다(웹 location.href 와 달리 절대 URL 필요).
-    const base =
-      getApiBase() ||
-      (typeof window !== "undefined" ? window.location.origin : "");
-    const oauthUrl = `${base}/oauth2/authorization/${provider}`;
-
     try {
       await ensureCapacitorLoaded();
     } catch (_) {}
 
     const isNative = !!(Capacitor && Capacitor.isNativePlatform && Capacitor.isNativePlatform());
+    // 절대 URL. 네이티브는 /native-oauth 에서 Safari 쪽에 쿠키를 심은 뒤 인가를 시작한다.
+    const origin = getOAuthOrigin();
+    const oauthUrl = isNative
+      ? `${origin}/native-oauth?provider=${encodeURIComponent(provider)}`
+      : `${origin}/oauth2/authorization/${provider}`;
 
     if (isNative && Browser && typeof Browser.open === 'function') {
       try {

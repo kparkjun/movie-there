@@ -4,10 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>CFBundleDisplayName</key>
-	<string>Touraz Holic</string>
+	<string>movie there</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,51 +13,38 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>movie there</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.dvdholic.holic</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>dvdholic</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
-	<!-- App Tracking Transparency (required for AdMob iOS 14+) -->
-	<key>NSUserTrackingUsageDescription</key>
-	<string>맞춤형 광고를 제공하기 위해 추적 권한이 필요합니다.</string>
-	<!-- Location (required for @capacitor/geolocation) -->
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>주변 관광지, 의료·웰니스 시설 등 내 위치 기반 정보를 제공하기 위해 위치 권한이 필요합니다.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>주변 관광지, 의료·웰니스 시설 등 내 위치 기반 정보를 제공하기 위해 위치 권한이 필요합니다.</string>
-	<!-- Google AdMob -->
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-8265488633224466~5646537987</string>
 	<key>GADDelayAppMeasurementInit</key>
 	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>주변 관광지, 의료·웰니스 시설 등 내 위치 기반 정보를 제공하기 위해 위치 권한이 필요합니다.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>주변 관광지, 의료·웰니스 시설 등 내 위치 기반 정보를 제공하기 위해 위치 권한이 필요합니다.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>맞춤형 광고를 제공하기 위해 추적 권한이 필요합니다.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
@@ -119,22 +104,32 @@
 			<string>3rd42ekr43.skadnetwork</string>
 		</dict>
 	</array>
-	<!-- Custom URL Scheme for OAuth callback (App Store Guideline 4 & 2.1a fix) -->
-	<key>CFBundleURLTypes</key>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.dvdholic.holic</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>dvdholic</string>
-			</array>
-		</dict>
+		<string>armv7</string>
 	</array>
-	<!-- Universal Links for OAuth callback -->
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:touraz-dvdholic-2194adc70fa6.herokuapp.com</string>
+		<string>applinks:movie-there-290fdbcabcb3.herokuapp.com</string>
 	</array>
 </dict>
 </plist>
