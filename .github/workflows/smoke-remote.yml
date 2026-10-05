@@ -1,8 +1,7 @@
 name: Smoke (remote)
 
 # 외부(스테이징/프로덕션/Heroku) 서버 대상 E2E 스모크 테스트.
-# - workflow_dispatch: 수동 실행 (URL 입력 가능)
-# - schedule: 매일 07:00 KST (22:00 UTC) 자동 회귀
+# 매일 자동 실행은 끄고, 필요할 때만 수동으로 실행한다.
 # 로컬 스크립트 scripts/smoke.sh 를 그대로 재사용해 CI/로컬 동치를 보장한다.
 
 on:
@@ -20,9 +19,6 @@ on:
         description: 'Batch 수동 트리거 실행 여부 (1=on, 0=off)'
         required: false
         default: '0'
-  schedule:
-    # 매일 22:00 UTC = 07:00 KST
-    - cron: '0 22 * * *'
 
 jobs:
   smoke:
