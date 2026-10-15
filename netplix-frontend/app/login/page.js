@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import axios from "@/lib/axiosConfig";
 import { getOAuthOrigin } from "@/lib/apiConfig";
+import { postApi } from "@/lib/postApi";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { hardNavigate, markHomeVisited, isEmbeddedPreview } from "@/lib/hardNavigate";
 let Capacitor, Browser;
@@ -47,6 +47,7 @@ function LoginContent() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const [oauthNotice, setOauthNotice] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -64,12 +65,13 @@ function LoginContent() {
       const url = new URL(window.location.href);
       if (url.searchParams.get("error")) {
         resetNativeOAuthSession();
+        setOauthNotice(t("login.oauthFailedVisible"));
         url.searchParams.delete("error");
         window.history.replaceState({}, "", url.pathname + (url.search || ""));
       }
     }
     ensureCapacitorLoaded();
-  }, []);
+  }, [t]);
 
   /** 인앱 브라우저 모달(X) 닫기 — OAuth 세션·버튼 상태 복구 */
   useEffect(() => {
@@ -140,7 +142,7 @@ function LoginContent() {
     e.preventDefault();
     if (isLoggingIn) return;
 
-    const trimmedEmail = (email || "").trim();
+    const trimmedEmail = (email || "").replace(/\s/g, "").toLowerCase();
     const trimmedPassword = (password || "").trim();
 
     if (!trimmedEmail && !trimmedPassword) {
@@ -158,26 +160,30 @@ function LoginContent() {
 
     setIsLoggingIn(true);
     try {
-      const response = await axios.post("/api/v1/auth/login", {
+      const response = await postApi("/api/v1/auth/login", {
         email: trimmedEmail,
         password: trimmedPassword,
       });
 
-      if (!response.data.success) {
-        const msg = response.data.message || response.data.code || t("login.unknownError");
-        alert(t("login.loginFailed") + msg);
-      } else {
-        localStorage.setItem("token", response.data.data.accessToken);
-        localStorage.setItem("refresh_token", response.data.data.refreshToken);
+      const accessToken = response.data?.data?.accessToken;
+      const refreshToken = response.data?.data?.refreshToken;
+      if (response.data?.success && accessToken) {
+        localStorage.setItem("token", accessToken);
+        if (refreshToken) localStorage.setItem("refresh_token", refreshToken);
         window.dispatchEvent(new CustomEvent('token-stored'));
         redirectAfterLogin();
+      } else if (!response.data?.success) {
+        const msg = response.data?.message || response.data?.code || t("login.unknownError");
+        alert(t("login.loginFailed") + msg);
+      } else {
+        alert(t("login.loginFailed") + t("login.unknownError"));
       }
     } catch (error) {
       console.error("Login failed:", error);
       const serverMsg = error.response?.data?.message || error.response?.data?.code;
       const displayMsg = serverMsg
         ? t("login.loginFailed") + serverMsg
-        : t("login.loginFailedCheck");
+        : t("login.networkError");
       alert(displayMsg);
     } finally {
       setIsLoggingIn(false);
@@ -278,6 +284,24 @@ function LoginContent() {
               </p>
             </div>
 
+            {oauthNotice ? (
+              <p
+                role="alert"
+                style={{
+                  marginBottom: "16px",
+                  padding: "12px 14px",
+                  borderRadius: "12px",
+                  background: "rgba(239, 68, 68, 0.12)",
+                  border: "1px solid rgba(239, 68, 68, 0.35)",
+                  color: "#fecaca",
+                  fontSize: "13px",
+                  lineHeight: 1.45,
+                }}
+              >
+                {oauthNotice}
+              </p>
+            ) : null}
+
             {/* Login Form */}
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email Input */}
@@ -297,6 +321,11 @@ function LoginContent() {
                   </div>
                   <input
                     type="email"
+                    inputMode="email"
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    autoComplete="username"
                     placeholder="example@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -332,6 +361,10 @@ function LoginContent() {
                   </div>
                   <input
                     type={showPassword ? 'text' : 'password'}
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    autoComplete="current-password"
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}

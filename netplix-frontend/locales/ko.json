@@ -52,6 +52,7 @@
     "noAccount": "계정이 없으신가요?",
     "signup": "회원가입",
     "oauthFailed": "소셜 로그인에 실패했습니다.",
+    "oauthFailedVisible": "Apple 또는 카카오 로그인에 실패했습니다. 아래 이메일과 비밀번호로 로그인해 주세요.",
     "oauthRetry": "iOS 앱에서는 WKWebView 정책으로 첫 시도가 실패할 수 있습니다. 같은 버튼을 한 번 더 눌러 재시도해 주세요. (일반적으로 두 번째 시도에서 성공합니다)",
     "browseWithoutLogin": "로그인 없이 둘러보기",
     "enterEmailAndPassword": "이메일과 비밀번호를 입력해 주세요.",
@@ -59,6 +60,7 @@
     "enterPassword": "비밀번호를 입력해 주세요.",
     "loginFailed": "로그인 실패. ",
     "loginFailedCheck": "로그인 실패: 이메일 또는 비밀번호를 확인해 주세요.",
+    "networkError": "로그인 서버에 연결하지 못했습니다. 네트워크를 확인한 뒤 다시 시도해 주세요.",
     "unknownError": "알 수 없는 오류",
     "processingLogin": "로그인 처리 중..."
   },

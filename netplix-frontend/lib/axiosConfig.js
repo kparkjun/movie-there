@@ -1,6 +1,35 @@
 import axios from "axios";
 import { getApiBaseUrl } from "@/lib/apiConfig";
 
+function unwrapApiPayload(data) {
+  let current = data;
+  for (let i = 0; i < 3; i += 1) {
+    if (typeof current === "string") {
+      const trimmed = current.trim();
+      if (!trimmed.startsWith("{") && !trimmed.startsWith("[")) break;
+      try {
+        current = JSON.parse(trimmed);
+        continue;
+      } catch {
+        break;
+      }
+    }
+    if (
+      current &&
+      typeof current === "object" &&
+      !Array.isArray(current) &&
+      !("success" in current) &&
+      current.data != null &&
+      (typeof current.status === "number" || current.headers || current.url)
+    ) {
+      current = current.data;
+      continue;
+    }
+    break;
+  }
+  return current;
+}
+
 function getAcceptLanguage() {
   return "ko-KR,ko;q=0.9";
 }
@@ -84,11 +113,30 @@ axios.interceptors.request.use(
 );
 
 // Response Interceptor: 401 에러 시 로그인 페이지로 리다이렉트 (단, 공개 API는 제외)
+axios.defaults.transformResponse = [
+  (data) => {
+    if (typeof data !== "string") return data;
+    const trimmed = data.trim();
+    if (!trimmed.startsWith("{") && !trimmed.startsWith("[")) return data;
+    try {
+      return JSON.parse(trimmed);
+    } catch {
+      return data;
+    }
+  },
+];
+
 axios.interceptors.response.use(
   (response) => {
+    if (response && "data" in response) {
+      response.data = unwrapApiPayload(response.data);
+    }
     return response;
   },
   (error) => {
+    if (error?.response && "data" in error.response) {
+      error.response.data = unwrapApiPayload(error.response.data);
+    }
     if (error.response && error.response.status === 401) {
       const url = error.config?.url || "";
       const noRedirectOn401 =

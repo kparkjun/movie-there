@@ -2,9 +2,8 @@
 
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import axios from "@/lib/axiosConfig";
-import { useRouter } from "next/navigation";
-import { getApiBaseUrl } from "@/lib/apiConfig";
+import { postApi } from "@/lib/postApi";
+import { hardNavigate } from "@/lib/hardNavigate";
 import { motion } from "framer-motion";
 import { Mail, Lock, User, Phone, Eye, EyeOff } from "lucide-react";
 
@@ -20,7 +19,6 @@ function Signup() {
 
   const [focusedField, setFocusedField] = useState(null);
 
-  const router = useRouter();
   const { t } = useTranslation();
 
   const [countryCode, setCountryCode] = useState("+82");
@@ -71,7 +69,7 @@ function Signup() {
     e.preventDefault();
 
     const trimmedUsername = (username || "").trim();
-    const trimmedEmail = (email || "").trim().replace(/\s/g, "");
+    const trimmedEmail = (email || "").trim().replace(/\s/g, "").toLowerCase();
 
     if (!trimmedUsername || trimmedUsername.length < 2 || trimmedUsername.length > 50) {
       alert(t("signup.nameMinLength"));
@@ -101,7 +99,7 @@ function Signup() {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post("/api/v1/user/register", {
+      const response = await postApi("/api/v1/user/register", {
         username: trimmedUsername,
         password: password1,
         email: trimmedEmail,
@@ -110,11 +108,9 @@ function Signup() {
         termsConsent: agreeTerms,
       });
 
-      if (response.data.success) {
+      if (response.data?.success) {
         alert(t("signup.signupComplete"));
-        const base = getApiBaseUrl() || window.location.origin;
-        const url = base.startsWith("http") ? `${base.replace(/\/$/, "")}/login` : "/login";
-        window.location.replace(url);
+        hardNavigate("/login");
       } else {
         alert(t("signup.signupFailed") + failDetail(response.data));
       }
@@ -321,6 +317,11 @@ function Signup() {
                   </div>
                   <input
                     type="email"
+                    inputMode="email"
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    autoComplete="email"
                     placeholder="example@email.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -349,6 +350,10 @@ function Signup() {
                   </div>
                   <input
                     type={showPassword1 ? 'text' : 'password'}
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    autoComplete="new-password"
                     placeholder={t("signup.passwordPlaceholder")}
                     value={password1}
                     onChange={(e) => setPassword1(e.target.value)}
@@ -385,6 +390,10 @@ function Signup() {
                   </div>
                   <input
                     type={showPassword2 ? 'text' : 'password'}
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    autoComplete="new-password"
                     placeholder={t("signup.confirmPasswordPlaceholder")}
                     value={password2}
                     onChange={(e) => setPassword2(e.target.value)}
@@ -616,7 +625,7 @@ function Signup() {
               {t("signup.hasAccount")}{' '}
               <button
                 type="button"
-                onClick={() => router.push("/login")}
+                onClick={() => hardNavigate("/login")}
                 style={{
                   color: '#8b5cf6',
                   fontWeight: 600,
